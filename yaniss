@@ -1,0 +1,53 @@
+Table MORPION {
+  id_morpion int [pk]
+  nom text
+  image text
+  pv int
+  attaque int
+  mana int
+  reussite float
+}
+
+Table EQUIPE {
+  id_equipe int [pk]
+  nom text
+  couleur text [unique]
+  date_creation date
+}
+
+Table COMPOSER {
+  id_equipe int [ref: > EQUIPE.id_equipe]
+  id_morpion int [ref: > MORPION.id_morpion]
+
+  indexes {
+    (id_equipe, id_morpion) [pk]
+  }
+}
+
+Table CONFIGURATION_PARTIE {
+  id_config int [pk]
+  taille_grille int
+  nb_tours_max int
+  date_config date
+}
+
+Table PARTIE {
+  id_partie int [pk]
+  date_debut datetime
+  date_fin datetime
+  id_equipe1 int [ref: > EQUIPE.id_equipe]
+  id_equipe2 int [ref: > EQUIPE.id_equipe]
+  id_gagnant int [ref: > EQUIPE.id_equipe]
+  id_config int [ref: > CONFIGURATION_PARTIE.id_config]
+}
+
+Table JOURNAL {
+  id_partie int [ref: > PARTIE.id_partie]
+  num_ligne int
+  horodatage datetime
+  texte_action text
+
+  indexes {
+    (id_partie, num_ligne) [pk]
+  }
+}
